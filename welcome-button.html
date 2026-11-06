@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willkommen & Umleit-Funktion Extrakt</title>
+    
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
+
+    <!-- 1. Willkommens-Block (Musterüberschrift) -->
+    <section id="about" class="relative py-12 lg:py-20 overflow-hidden bg-grid-pattern border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 text-center space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-300/60 text-sky-800 text-xs font-semibold uppercase tracking-wider">
+                <span class="w-2 h-2 rounded-full bg-sky-600 animate-pulse"></span>
+                <span>Willkommen auf meiner Homepage</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                Musterüberschrift
+            </h1>
+
+            <p class="text-slate-700 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto font-normal">
+                Dies ist der Willkommens-Bereich vor der Umleitung und den nachfolgenden Themenblöcken.
+            </p>
+        </div>
+    </section>
+
+    <!-- Umleitbutton -->
+    <section class="py-6 bg-slate-100/80 border-b border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <button onclick="showNothingPage()" class="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-black text-slate-200 hover:text-white font-medium text-xs sm:text-sm tracking-wide shadow-md transition-all hover:scale-105 border border-slate-700/50 flex items-center justify-center gap-2.5 mx-auto group">
+                <i class="fa-solid fa-arrow-right-to-bracket text-sky-400 group-hover:translate-x-0.5 transition-transform"></i>
+                <span>Klimawandelleugner, Diesel-Dieters, FPÖ/AfD Anhänger, Trump/Putin Anhänger hier gehts lang</span>
+            </button>
+        </div>
+    </section>
+
+
+    <!-- 2. Funktion: Schwarzer Overlay-Screen ("Hier gibt's nichts zu sehen!") -->
+    <div id="nothing-overlay" class="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center p-6 text-center transition-opacity duration-1000 opacity-0 pointer-events-none hidden">
+        
+        <!-- Text Ansicht -->
+        <div id="nothing-content" class="flex flex-col items-center">
+            <h2 id="nothing-text" class="text-xl sm:text-3xl lg:text-4xl font-mono text-slate-100 tracking-wide mb-8 transition-all duration-1000 opacity-0 translate-y-4 max-w-3xl leading-relaxed">
+                Hier gibt's nichts zu sehen! Auf Wiedersehen, verlassen Sie bitte meine Homepage!
+            </h2>
+            <button onclick="startCmdSimulation()" class="px-6 py-3.5 rounded-xl bg-rose-950/80 hover:bg-rose-900 border border-rose-700/50 text-rose-200 font-mono text-xs sm:text-sm tracking-wider transition-all duration-500 opacity-0 translate-y-4 shadow-lg hover:scale-105 flex items-center gap-2" id="nothing-action-btn">
+                <i class="fa-solid fa-terminal text-rose-400"></i>
+                <span>Ich möchte aber die Schlafschaf bzw. Klimahysteriker-Homepage sehen,</span>
+            </button>
+        </div>
+
+        <!-- 3. Funktion: OS-spezifisches Terminal / Formatierungs-Simulator -->
+        <div id="cmd-window" class="hidden w-full max-w-2xl bg-black border border-slate-700 rounded-lg shadow-2xl text-left font-mono text-xs sm:text-sm p-4 text-gray-200 space-y-3">
+            <!-- Window Header -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                <div class="flex items-center gap-2 text-slate-400 text-xs">
+                    <i class="fa-solid fa-terminal" id="cmd-icon"></i>
+                    <span id="cmd-title-text">Terminal</span>
+                </div>
+                <div class="flex gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+                </div>
+            </div>
+
+            <!-- Terminal Output -->
+            <div class="space-y-1.5 font-mono">
+                <p id="cmd-sys-info" class="text-slate-400"></p>
+                <p id="cmd-command-line" class="pt-1 text-white font-bold"></p>
+                <p id="cmd-warning-msg" class="text-amber-400 font-semibold"></p>
+                
+                <!-- Ladebalken -->
+                <div id="cmd-progress-container" class="pt-3">
+                    <div class="flex items-center justify-between text-xs mb-1 text-slate-300">
+                        <span id="cmd-target-label">Vorgang wird ausgeführt...</span>
+                        <span id="cmd-percentage" class="text-emerald-400 font-bold">0%</span>
+                    </div>
+                    <div id="cmd-progress-bar" class="text-emerald-400 tracking-wider bg-slate-900 p-2 rounded border border-slate-800 font-bold overflow-hidden text-ellipsis whitespace-nowrap">
+                        [░░░░░░░░░░░░░░░░░░░░]
+                    </div>
+                </div>
+                
+                <p id="cmd-status-msg" class="text-xs text-slate-400 pt-2 animate-pulse">Initialisiere...</p>
+
+                <!-- Warnschuss Meldung nach 5 Sekunden -->
+                <div id="warning-shot-box" class="hidden pt-4 border-t border-rose-900/60 mt-4 text-center">
+                    <div class="p-4 rounded-xl bg-rose-950/90 border border-rose-600 text-rose-200 text-xs sm:text-sm md:text-base font-extrabold tracking-wide shadow-2xl animate-bounce leading-relaxed">
+                        ⚠️ Das war nur ein Warnschuss, es ist nichts passiert. Aber schleich di .. Mir ist meine Lebenszeit zu schade, wir haben nichts gemeinsam und diskutieren auch nicht!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Logik der beiden Funktionen -->
+    <script>
+        // Funktion 1: Schwarzer Screen einblenden
+        function showNothingPage() {
+            const overlay = document.getElementById('nothing-overlay');
+            const text = document.getElementById('nothing-text');
+            const actionBtn = document.getElementById('nothing-action-btn');
+            const nothingContent = document.getElementById('nothing-content');
+            const cmdWindow = document.getElementById('cmd-window');
+
+            document.body.style.overflow = 'hidden';
+            nothingContent.classList.remove('hidden');
+            cmdWindow.classList.add('hidden');
+            overlay.classList.remove('hidden');
+            
+            setTimeout(() => {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }, 10);
+
+            setTimeout(() => {
+                text.classList.remove('opacity-0', 'translate-y-4');
+            }, 400);
+
+            setTimeout(() => {
+                actionBtn.classList.remove('opacity-0', 'translate-y-4');
+            }, 1200);
+        }
+
+        // Funktion 2: Betriebssystem-Erkennung & 5s Terminal Formatierungs-Simulator
+        function detectOS() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/android/i.test(userAgent)) return 'android';
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) return 'ios';
+            if (/Macintosh|Mac OS X/.test(userAgent)) return 'mac';
+            if (/Linux/.test(userAgent)) return 'linux';
+            return 'windows';
+        }
+
+        function startCmdSimulation() {
+            const nothingContent = document.getElementById('nothing-content');
+            const cmdWindow = document.getElementById('cmd-window');
+            const cmdTitle = document.getElementById('cmd-title-text');
+            const sysInfo = document.getElementById('cmd-sys-info');
+            const commandLine = document.getElementById('cmd-command-line');
+            const warningMsg = document.getElementById('cmd-warning-msg');
+            const targetLabel = document.getElementById('cmd-target-label');
+            const progressBar = document.getElementById('cmd-progress-bar');
+            const percentageText = document.getElementById('cmd-percentage');
+            const statusMsg = document.getElementById('cmd-status-msg');
+            const warningShotBox = document.getElementById('warning-shot-box');
+
+            const os = detectOS();
+
+            nothingContent.classList.add('hidden');
+            cmdWindow.classList.remove('hidden');
+            warningShotBox.classList.add('hidden');
+
+            // OS-spezifische Ausgaben
+            if (os === 'windows') {
+                cmdTitle.textContent = 'Command Prompt - format C:';
+                sysInfo.textContent = 'Microsoft Windows [Version 10.0.22631.3007]';
+                commandLine.textContent = 'C:\\> format C: /FS:NTFS /Q';
+                warningMsg.textContent = 'WARNUNG: ALLE DATEN AUF DEMENTSPRECHENDEM FESTPLATTENLAUFWERK C: WERDEN GELÖSCHT!';
+                targetLabel.textContent = 'Laufwerk C: wird formatiert';
+            } else if (os === 'mac') {
+                cmdTitle.textContent = 'zsh — Terminal — rm -rf /';
+                sysInfo.textContent = 'Last login: ' + new Date().toLocaleDateString() + ' on ttys000 (macOS Sonoma)';
+                commandLine.textContent = 'stefan@macbook-pro ~ % sudo rm -rf /System /Users /Library';
+                warningMsg.textContent = 'WARNING: Root access granted. Wiping Macintosh HD (APFS Volume Group)...';
+                targetLabel.textContent = 'Macintosh HD wird gelöscht';
+            } else if (os === 'linux') {
+                cmdTitle.textContent = 'bash — root@localhost:~';
+                sysInfo.textContent = 'Linux kernel 6.6.13-generic x86_64 x86_64 GNU/Linux';
+                commandLine.textContent = 'root@localhost:~# rm -rf / --no-preserve-root';
+                warningMsg.textContent = 'CRITICAL: Destroying all mounted partitions (/dev/sda1, /dev/nvme0n1)...';
+                targetLabel.textContent = 'Root-Dateisystem / wird bereinigt';
+            } else if (os === 'android') {
+                cmdTitle.textContent = 'Android System Console — Wiping User Data';
+                sysInfo.textContent = 'Android Recovery v14.0 — Build/UP1A.231005.007';
+                commandLine.textContent = 'root@android:~# dd if=/dev/zero of=/dev/block/bootdevice/by-name/userdata';
+                warningMsg.textContent = 'WARNUNG: Werkszustand wird erzwungen. Alle Fotos, Apps & Speicher gelöscht!';
+                targetLabel.textContent = 'Formatiere userdata & nvram';
+            } else if (os === 'ios') {
+                cmdTitle.textContent = 'iOS System Recovery Console';
+                sysInfo.textContent = 'Apple iOS 17.4 (Build 21E219) Bootrom Loader';
+                commandLine.textContent = 'iPhone:~ root# nvram -d nvram_data && erase_all_payload';
+                warningMsg.textContent = 'ATTENTION: NAND Flash Encryption Keys permanently purged!';
+                targetLabel.textContent = 'Erasing iPhone Internal NAND Flash';
+            }
+
+            // Exakt 5 Sekunden Timer (100 Schritte à 50ms)
+            const durationMs = 5000;
+            const intervalMs = 50;
+            const totalSteps = durationMs / intervalMs;
+            let currentStep = 0;
+            const totalBlocks = 20;
+
+            const interval = setInterval(() => {
+                currentStep++;
+                let progress = Math.floor((currentStep / totalSteps) * 100);
+
+                if (progress > 100) progress = 100;
+
+                const filledBlocks = Math.floor((progress / 100) * totalBlocks);
+                const emptyBlocks = totalBlocks - filledBlocks;
+                const barString = '[' + '█'.repeat(filledBlocks) + '░'.repeat(emptyBlocks) + ']';
+
+                progressBar.textContent = barString;
+                percentageText.textContent = progress + '%';
+
+                if (progress < 30) {
+                    statusMsg.textContent = 'Systemdateien & Cache werden überschrieben...';
+                } else if (progress < 70) {
+                    statusMsg.textContent = 'Partitionstabelle & Dateisystem werden bereinigt...';
+                } else if (progress < 100) {
+                    statusMsg.textContent = 'Speicherbereich wird endgültig freigegeben...';
+                } else {
+                    clearInterval(interval);
+                    statusMsg.textContent = 'Vorgang beendet.';
+                    statusMsg.classList.remove('animate-pulse');
+                    
+                    // Einblenden des Warnschusses nach 5s
+                    warningShotBox.classList.remove('hidden');
+                }
+            }, intervalMs);
+        }
+    </script>
+</body>
+</html>
